@@ -31,7 +31,7 @@ function extractNumber(string) {
     if (!Number.isNaN(parseInt(string[i], 10))) {
       newNumber += string[i];
     }
-    return newNumber;
+    return parseInt(newNumber, 10);
   }
 }
 

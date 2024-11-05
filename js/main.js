@@ -66,6 +66,10 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 const AVATARS = Array.from({ length: 6 }, (_, i) => `img/avatar-${i + 1}.svg`);
 const URLS = Array.from({ length: 25 }, (_, i) => `photos/${i + 1}.jpg`);
 
+const minLikes = 15;
+const maxLikes = 200;
+const maxComments = 30;
+
 const createCommentArray = () => ({
   id: idCommentGenerator(),
   avatar: getRandomArrayElement(AVATARS),
@@ -77,8 +81,8 @@ const createPhotoArray = () => ({
   id: idPhotoGenerator(),
   url: getRandomArrayElement(URLS),
   description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger(15, 200),
-  comments: Array.from({ length: getRandomInteger(0, 30) }, createCommentArray),
+  likes: getRandomInteger(minLikes, maxLikes),
+  comments: Array.from({ length: getRandomInteger(0, maxComments) }, createCommentArray),
 });
 
 const createAllPhotos = () => Array.from({ length: 25 }, createPhotoArray);

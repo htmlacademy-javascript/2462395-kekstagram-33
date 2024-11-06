@@ -1,3 +1,11 @@
+const MIN_PHOTO_NUMBER = 1;
+const MAX_PHOTO_NUMBER = 25;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+const MAX_COMMENTS = 30;
+const MIN_AVATAR_NUMBER = 1;
+const MAX_AVATAR_NUMBER = 6;
+
 const NAMES = [
   'Маша',
   'Вика',
@@ -63,28 +71,24 @@ const getRandomInteger = (a, b) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const AVATARS = Array.from({ length: 6 }, (_, i) => `img/avatar-${i + 1}.svg`);
-const URLS = Array.from({ length: 25 }, (_, i) => `photos/${i + 1}.jpg`);
+const createCommentArray = () => {
+  const commentCount = getRandomInteger(0, MAX_COMMENTS);
+  return Array.from({ length: commentCount }, () => ({
+    id: idCommentGenerator(),
+    avatar: `img/avatar-${getRandomInteger(MIN_AVATAR_NUMBER, MAX_AVATAR_NUMBER)}.svg`,
+    message: getRandomArrayElement(MESSAGES),
+    name: getRandomArrayElement(NAMES),
+  }));
+};
 
-const minLikes = 15;
-const maxLikes = 200;
-const maxComments = 30;
-
-const createCommentArray = () => ({
-  id: idCommentGenerator(),
-  avatar: getRandomArrayElement(AVATARS),
-  message: getRandomArrayElement(MESSAGES),
-  name: getRandomArrayElement(NAMES),
-});
-
-const createPhotoArray = () => ({
+const createPhoto = () => ({
   id: idPhotoGenerator(),
-  url: getRandomArrayElement(URLS),
+  url: `photos/${getRandomInteger(MIN_PHOTO_NUMBER, MAX_PHOTO_NUMBER)}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger(minLikes, maxLikes),
-  comments: Array.from({ length: getRandomInteger(0, maxComments) }, createCommentArray),
+  likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+  comments: createCommentArray(),
 });
 
-const createAllPhotos = () => Array.from({ length: 25 }, createPhotoArray);
+const createPhotoArray = () => Array.from({ length: MAX_PHOTO_NUMBER }, createPhoto);
 
-createAllPhotos();
+createPhotoArray();

@@ -1,3 +1,6 @@
-import {createPhotoArray} from './create-photo.js';
+import { createPhotoArray } from './create-photo.js';
+import { renderPhotos } from './render-thumbnails.js';
 
-createPhotoArray();
+const photos = createPhotoArray();
+
+renderPhotos(photos);

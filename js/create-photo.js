@@ -11,7 +11,7 @@ import {
   MESSAGES,
 } from './data-photo.js';
 
-import {createIdGenerator, getRandomInteger, getRandomArrayElement} from './util.js';
+import { createIdGenerator, getRandomInteger, getRandomArrayElement } from './util.js';
 
 const idPhotoGenerator = createIdGenerator();
 const idCommentGenerator = createIdGenerator();
@@ -34,8 +34,4 @@ const createPhoto = () => ({
   comments: createCommentArray(),
 });
 
-const createPhotoArray = () => Array.from({ length: MAX_PHOTO_NUMBER }, createPhoto);
-
-createPhotoArray();
-
-export {createPhotoArray};
+export const createPhotoArray = () => Array.from({ length: MAX_PHOTO_NUMBER }, createPhoto);

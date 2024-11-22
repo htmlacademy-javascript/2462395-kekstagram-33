@@ -1,25 +1,34 @@
-import {createPhotoArray} from './create-photo.js';
+import { showBigPhoto } from './big-photo.js';
 
 const picturesContainer = document.querySelector('.pictures');
-const pictureTemplate = document.querySelector('#picture').content;
-const photos = createPhotoArray();
-
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const fragment = document.createDocumentFragment();
 
-photos.forEach((photo) => {
-  const pictureElement = pictureTemplate.cloneNode(true);
+export const renderPhotos = (photos) => {
+  photos.forEach((photo) => {
+    const pictureElement = pictureTemplate.cloneNode(true);
 
-  const img = pictureElement.querySelector('.picture__img');
-  img.src = photo.url;
-  img.alt = photo.description;
+    const img = pictureElement.querySelector('.picture__img');
+    img.src = photo.url;
+    img.alt = photo.description;
 
-  const likes = pictureElement.querySelector('.picture__likes');
-  likes.textContent = photo.likes;
+    const likes = pictureElement.querySelector('.picture__likes');
+    likes.textContent = photo.likes;
 
-  const comments = pictureElement.querySelector('.picture__comments');
-  comments.textContent = photo.comments.length;
+    const comments = pictureElement.querySelector('.picture__comments');
+    comments.textContent = photo.comments.length;
 
-  fragment.appendChild(pictureElement);
-});
+    const onPictureElementClick = (evt) => {
+      evt.preventDefault();
 
-picturesContainer.appendChild(fragment);
+      showBigPhoto(photo);
+    };
+
+    pictureElement.addEventListener('click', onPictureElementClick);
+
+    fragment.appendChild(pictureElement);
+  });
+
+  picturesContainer.appendChild(fragment);
+};
+

@@ -1,12 +1,10 @@
-import { isEscapeKey } from './util.js';
-
 const MAX_HASHTAG_NUMBER = 5;
 const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const uploadForm = document.querySelector('.img-upload__form');
-const hashtagInput = uploadForm.querySelector('.text__hashtags');
-const commentInput = uploadForm.querySelector('.text__description');
+export const hashtagInput = uploadForm.querySelector('.text__hashtags');
+export const commentInput = uploadForm.querySelector('.text__description');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -17,48 +15,76 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__error',
 }, false);
 
-export function validateHashtags(value) {
-  if (!value.trim()) {
-    return true;
-  } // пустая строка
-
-  const hashtags = value.split(' ').filter(Boolean); // разделяем по пробелам
-
-  if (hashtags.length > MAX_HASHTAG_NUMBER) {
-    return false;
+// разделение строки на массив
+const splitHashtags = (input) => {
+  if (!input.trim()) {
+    return [];
   }
+  return input.trim().toLowerCase().split(/\s+/);
+};
 
-  for (let i = 0; i < hashtags.length; i++) {
-    const tag = hashtags[i].toLowerCase();
+// проверка формата
+const isHashtagValidFormat = (hashtag) => HASHTAG_PATTERN.test(hashtag);
 
-    if (!HASHTAG_PATTERN.test(tag)) {
-      return false;
-    }
+// проверка на уникальность
+const areHashtagsUnique = (hashtags) => {
+  const uniqueHashtags = new Set(hashtags);
+  return uniqueHashtags.size === hashtags.length;
+};
 
-    if (hashtags.indexOf(tag) !== i) {
-      return false;
-    }
-  }
+// проверка на количество
+const isHashtagsCountValid = (hashtags) => hashtags.length <= MAX_HASHTAG_NUMBER;
 
-  return true;
-}
+// общая проверка валидации хэштегов
+export const validateHashtags = (hashtags) =>
+  isHashtagsCountValid(hashtags) &&
+  areHashtagsUnique(hashtags) &&
+  hashtags.every(isHashtagValidFormat);
 
 export function validateComments(value) {
   return value.length <= MAX_COMMENT_LENGTH;
 }
 
-// валидатор хэштегов
+const ValidationErrors = {
+  HASHTAGS: {
+    FORMAT: 'Хэштег должен начинаться с # и может содержать только буквы и цифры.',
+    ONLY_HASH: 'Хэштег не может состоять из одной #.',
+    MAX_COUNT: 'Хэштегов должно быть не больше пяти.',
+    NO_REPEAT: 'Хэштеги не должны повторяться.',
+  },
+  COMMENT: {
+    TOO_LONG: 'Комментарий не может быть длиннее 140 символов.',
+  },
+};
+
 pristine.addValidator(
   hashtagInput,
-  validateHashtags,
-  'Хэштеги должны начинаться с #, их может быть не более 5, каждый максимум 20 символов, они не должны повторяться.'
+  (value) => splitHashtags(value).every(isHashtagValidFormat),
+  ValidationErrors.HASHTAGS.FORMAT
 );
 
-// валидатор комментариев
+pristine.addValidator(
+  hashtagInput,
+  (value) => splitHashtags(value).every(isHashtagValidFormat),
+  ValidationErrors.HASHTAGS.ONLY_HASH
+);
+
+pristine.addValidator(
+  hashtagInput,
+  (value) => isHashtagsCountValid(splitHashtags(value)),
+  ValidationErrors.HASHTAGS.MAX_COUNT
+);
+
+pristine.addValidator(
+  hashtagInput,
+  (value) => areHashtagsUnique(splitHashtags(value)),
+  ValidationErrors.HASHTAGS.NO_REPEAT
+);
+
 pristine.addValidator(
   commentInput,
   validateComments,
-  'Комментарий не может быть длиннее 140 символов.'
+  ValidationErrors.COMMENT.TOO_LONG
 );
 
 // валидация формы
@@ -72,9 +98,3 @@ uploadForm.addEventListener('submit', (evt) => {
   }
 });
 
-// нажатие на Esc не должно приводить к закрытию формы
-hashtagInput.addEventListener('keydown', (evt) => {
-  if (isEscapeKey) {
-    evt.stopPropagation();
-  }
-});

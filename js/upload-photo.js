@@ -1,4 +1,4 @@
-import { validateHashtags, validateComments } from './validation.js';
+import { validateHashtags, validateComments, hashtagInput, commentInput } from './validation.js';
 import { isEscapeKey } from './util.js';
 import { changeScale } from './effects.js';
 
@@ -13,8 +13,8 @@ const scaleControlValue = document.querySelector('.scale__control--value');
 const openUploadOverlay = () => {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  validateHashtags();
-  validateComments();
+  validateHashtags(hashtagInput.value);
+  validateComments(commentInput.value);
   changeScale(previewImage, scaleControlSmaller, scaleControlBigger, scaleControlValue);
 };
 
@@ -29,6 +29,10 @@ closeOverlayButton.addEventListener('click', closeUploadOverlay);
 
 document.addEventListener('keydown', () => {
   if (isEscapeKey && !uploadOverlay.classList.contains('hidden')) {
+    const activeElement = document.activeElement;
+    if (activeElement.classList.contains('text__hashtags') || activeElement.classList.contains('text__description')) {
+      return;
+    }
     closeUploadOverlay();
   }
 });

@@ -1,12 +1,14 @@
+import { closeUploadOverlay } from './upload-photo.js';
+
 const MAX_HASHTAG_NUMBER = 5;
 const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const uploadForm = document.querySelector('.img-upload__form');
+export const uploadForm = document.querySelector('.img-upload__form');
 export const hashtagInput = uploadForm.querySelector('.text__hashtags');
 export const commentInput = uploadForm.querySelector('.text__description');
 
-const pristine = new Pristine(uploadForm, {
+export const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--invalid',
   successClass: 'img-upload__field-wrapper--valid',
@@ -87,7 +89,7 @@ pristine.addValidator(
   ValidationErrors.COMMENT.TOO_LONG
 );
 
-// валидация формы
+
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
@@ -95,6 +97,7 @@ uploadForm.addEventListener('submit', (evt) => {
 
   if (isValid) {
     uploadForm.submit();
+
+    closeUploadOverlay();
   }
 });
-

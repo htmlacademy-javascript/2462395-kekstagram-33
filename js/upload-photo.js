@@ -18,7 +18,7 @@ const openUploadOverlay = () => {
   changeScale(previewImage, scaleControlSmaller, scaleControlBigger, scaleControlValue);
 };
 
-const closeUploadOverlay = () => {
+export const closeUploadOverlay = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadInput.value = '';

@@ -1,26 +1,31 @@
 const BASE_URL = 'https://32.javascript.htmlacademy.pro/kekstagram';
 
-const Route = {
-  GET_DATA: '/data',
-  SEND_DATA: '/',
+// загрузка данных
+export const fetchData = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/data`);
+    if (!response.ok) {
+      throw new Error(`Ошибка загрузки данных: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Ошибка загрузки данных: ${error.message}`);
+  }
 };
 
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
+// отправка данных
+export const sendData = async (formData) => {
+  try {
+    const response = await fetch(BASE_URL, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error(`Ошибка отправки данных: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Ошибка отправки данных: ${error.message}`);
+  }
 };
 
-const ErrorText = {
-  [Method.GET]: 'Не удалось загрузить данные. Попробуйте еще раз',
-  [Method.POST]: 'Не удалось отправить данные формы',
-};
-
-const load = async (route, method = Method.GET, body = null) => {
-  const response = await fetch(`${BASE_URL}${route}`, { method, body });
-  return response.ok
-    ? await response.json()
-    : Promise.rejest({ message: ErrorText[method], status: response.status });
-};
-
-export const getData = async () => await load(Route.GET_DATA);
-export const sendData = async (body) => await load(Route.SEND_DATA, Method.POST, body);

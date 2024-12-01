@@ -19,6 +19,8 @@ const showError = (message) => {
 
 export const renderPhotos = async () => {
   try {
+    // picturesContainer.innerHTML = '';
+
     const photos = await fetchData();
     photos.forEach((photo) => {
       const pictureElement = pictureTemplate.cloneNode(true);
@@ -43,7 +45,6 @@ export const renderPhotos = async () => {
       fragment.appendChild(pictureElement);
     });
 
-    picturesContainer.innerHTML = '';
     picturesContainer.appendChild(fragment);
   } catch (error) {
     showError('Ошибка загрузки данных с сервера');

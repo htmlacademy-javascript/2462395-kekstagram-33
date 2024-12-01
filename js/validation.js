@@ -1,4 +1,4 @@
-import { closeUploadOverlay } from './upload-photo.js';
+import { onCloseOverlay } from './upload-photo.js';
 
 const MAX_HASHTAG_NUMBER = 5;
 const MAX_COMMENT_LENGTH = 140;
@@ -98,6 +98,6 @@ uploadForm.addEventListener('submit', (evt) => {
   if (isValid) {
     uploadForm.submit();
 
-    closeUploadOverlay();
+    onCloseOverlay();
   }
 });

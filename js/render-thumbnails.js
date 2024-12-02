@@ -17,11 +17,18 @@ const showError = (message) => {
   }, 5000);
 };
 
+const clearPhotos = () => {
+  const photoElements = picturesContainer.querySelectorAll('.picture');
+  photoElements.forEach((element) => {
+    element.remove();
+  });
+};
+
 export const renderPhotos = async () => {
   try {
-    // picturesContainer.innerHTML = '';
-
     const photos = await fetchData();
+    clearPhotos();
+
     photos.forEach((photo) => {
       const pictureElement = pictureTemplate.cloneNode(true);
 

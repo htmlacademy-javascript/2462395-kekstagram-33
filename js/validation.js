@@ -22,7 +22,7 @@ const splitHashtags = (input) => {
   if (!input.trim()) {
     return [];
   }
-  return input.trim().toLowerCase().split(/\s+/);
+  return input.trim().toLowerCase().split(/\s+/).filter(Boolean);
 };
 
 // проверка формата
@@ -38,10 +38,14 @@ const areHashtagsUnique = (hashtags) => {
 const isHashtagsCountValid = (hashtags) => hashtags.length <= MAX_HASHTAG_NUMBER;
 
 // общая проверка валидации хэштегов
-export const validateHashtags = (hashtags) =>
-  isHashtagsCountValid(hashtags) &&
-  areHashtagsUnique(hashtags) &&
-  hashtags.every(isHashtagValidFormat);
+export const validateHashtags = (input) => {
+  const hashtags = splitHashtags(input);
+  return (
+    isHashtagsCountValid(hashtags) &&
+    areHashtagsUnique(hashtags) &&
+    hashtags.every(isHashtagValidFormat)
+  );
+};
 
 export function validateComments(value) {
   return value.length <= MAX_COMMENT_LENGTH;

@@ -14,6 +14,8 @@ const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
 const uploadForm = document.querySelector('.img-upload__form');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
+const SUCCESS_MESSAGE = 'Форма успешно отправлена';
+const ERROR_MESSAGE = 'Ошибка отправки данных';
 
 const resetForm = () => {
   uploadInput.value = '';
@@ -51,8 +53,6 @@ const onOpenOverlay = () => {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   pristine.validate();
-  validateHashtags(hashtagInput.value);
-  validateComments(commentInput.value);
   initiateScale(previewImage, scaleControlSmaller, scaleControlBigger, scaleControlValue);
   addEffectListeners();
   document.addEventListener('keydown', onDocumentKeydown);
@@ -61,18 +61,25 @@ const onOpenOverlay = () => {
 const onFormSubmit = async (evt) => {
   evt.preventDefault();
 
-  const isValid = pristine.validate();
+  const hashtags = hashtagInput.value;
+  const comments = commentInput.value;
+
+  const isValid =
+    pristine.validate() &&
+    validateHashtags(hashtags) &&
+    validateComments(comments);
+
   if (isValid) {
     submitButton.disabled = true;
 
     try {
       const formData = new FormData(uploadForm);
       await sendData(formData);
-      showSuccessMessage('Форма успешно отправлена');
+      showSuccessMessage(SUCCESS_MESSAGE);
       onCloseOverlay();
       resetForm();
     } catch (error) {
-      showErrorMessage('Ошибка отправки данных');
+      showErrorMessage(ERROR_MESSAGE);
     } finally {
       submitButton.disabled = false;
     }

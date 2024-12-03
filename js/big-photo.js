@@ -37,7 +37,7 @@ const renderComment = (comment) => {
 // отрисовывает комментарии внутри большого фото
 const renderComments = () => {
   socialComments.innerHTML = '';
-  socialCommentsCount.innerHTML = '';
+  // socialCommentsCount.innerHTML = '';
   commentFragment.innerHTML = '';
 
   commentsCount = (commentsCount > currentComments.length) ? currentComments.length : commentsCount;

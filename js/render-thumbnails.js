@@ -3,6 +3,7 @@ import { fetchData } from './api.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const ERROR_DATA_UPLOAD = 'Ошибка загрузки данных с сервера';
 const fragment = document.createDocumentFragment();
 
 // сообщение об ошибке
@@ -29,11 +30,14 @@ export const renderPhotos = async () => {
     const photos = await fetchData();
     clearPhotos();
 
-    photos.forEach((photo) => {
+    for (const photo of photos) {
       const pictureElement = pictureTemplate.cloneNode(true);
 
       const img = pictureElement.querySelector('.picture__img');
-      img.src = photo.url;
+
+      const imageBlob = await fetch(photo.url).then((response) => response.blob());
+      img.src = URL.createObjectURL(imageBlob);
+
       img.alt = photo.description;
 
       const likes = pictureElement.querySelector('.picture__likes');
@@ -50,10 +54,10 @@ export const renderPhotos = async () => {
       pictureElement.addEventListener('click', onPictureElementClick);
 
       fragment.appendChild(pictureElement);
-    });
+    }
 
     picturesContainer.appendChild(fragment);
   } catch (error) {
-    showError('Ошибка загрузки данных с сервера');
+    showError(ERROR_DATA_UPLOAD);
   }
 };

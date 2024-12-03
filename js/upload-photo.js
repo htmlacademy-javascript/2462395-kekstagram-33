@@ -14,8 +14,8 @@ const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
 const uploadForm = document.querySelector('.img-upload__form');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
-const SUCCESS_MESSAGE = 'Форма успешно отправлена';
-const ERROR_MESSAGE = 'Ошибка отправки данных';
+const SUCCESS_SUBMIT = 'Форма успешно отправлена';
+const ERROR_SUBMIT = 'Ошибка отправки данных';
 
 const resetForm = () => {
   uploadInput.value = '';
@@ -75,11 +75,11 @@ const onFormSubmit = async (evt) => {
     try {
       const formData = new FormData(uploadForm);
       await sendData(formData);
-      showSuccessMessage(SUCCESS_MESSAGE);
+      showSuccessMessage(SUCCESS_SUBMIT);
       onCloseOverlay();
       resetForm();
     } catch (error) {
-      showErrorMessage(ERROR_MESSAGE);
+      showErrorMessage(ERROR_SUBMIT);
     } finally {
       submitButton.disabled = false;
     }

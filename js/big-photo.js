@@ -77,15 +77,19 @@ function onEscKeyDown(evt) {
   }
 }
 
+// закрывает окно
 function closeBigPhoto() {
   commentsCount = COMMENTS_STEP;
 
   document.removeEventListener('keydown', onEscKeyDown);
+  loadButton.removeEventListener('click', onLoadButtonClick);
 
   toggleModal();
 }
 
 const onCloseClick = () => {
+  closeButton.removeEventListener('click', onCloseClick);
+
   closeBigPhoto();
 };
 
@@ -99,9 +103,8 @@ export const showBigPhoto = (photo) => {
   renderComments();
 
   document.addEventListener('keydown', onEscKeyDown);
+  closeButton.addEventListener('click', onCloseClick);
+  loadButton.addEventListener('click', onLoadButtonClick);
 
   toggleModal();
 };
-
-loadButton.addEventListener('click', onLoadButtonClick);
-closeButton.addEventListener('click', onCloseClick);

@@ -1,4 +1,4 @@
-import { validateHashtags, validateComments, hashtagInput, commentInput, pristine } from './validation.js';
+import { validateHashtags, validateComments, hashtagInput, commentInput, initializeValidation } from './validation.js';
 import { isEscapeKey } from './util.js';
 import { initiateScale, removeScaleEventListeners } from './scale.js';
 import { addEffectListeners, removeEffectListeners } from './slider.js';
@@ -15,7 +15,8 @@ const scaleControlValue = document.querySelector('.scale__control--value');
 const uploadForm = document.querySelector('.img-upload__form');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
 const SUCCESS_SUBMIT = 'Форма успешно отправлена';
-const ERROR_SUBMIT = 'Ошибка отправки данных';
+export const ERROR_SUBMIT = 'Ошибка отправки данных';
+let pristine;
 
 const resetForm = () => {
   uploadInput.value = '';
@@ -26,13 +27,17 @@ const resetForm = () => {
   commentInput.value = '';
   document.querySelector('#effect-none').checked = true;
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
+  if (pristine) {
+    pristine.reset();
+  }
 };
 
-export const onCloseOverlay = () => {
+const onCloseOverlay = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadInput.value = '';
   previewImage.style = '';
+  resetForm();
 
   document.removeEventListener('keydown', onDocumentKeydown);
   removeScaleEventListeners(scaleControlSmaller, scaleControlBigger);
@@ -42,6 +47,13 @@ export const onCloseOverlay = () => {
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt) && !uploadOverlay.classList.contains('hidden')) {
     const activeElement = document.activeElement;
+    const errorMessage = document.querySelector('.error');
+
+    if (errorMessage) {
+      errorMessage.remove();
+      return;
+    }
+
     if (activeElement.classList.contains('text__hashtags') || activeElement.classList.contains('text__description')) {
       return;
     }
@@ -52,7 +64,7 @@ function onDocumentKeydown(evt) {
 const onOpenOverlay = () => {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  pristine.validate();
+  pristine = initializeValidation();
   initiateScale(previewImage, scaleControlSmaller, scaleControlBigger, scaleControlValue);
   addEffectListeners();
   document.addEventListener('keydown', onDocumentKeydown);

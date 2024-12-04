@@ -30,14 +30,11 @@ export const renderPhotos = async () => {
     const photos = await fetchData();
     clearPhotos();
 
-    for (const photo of photos) {
+    photos.forEach((photo) => {
       const pictureElement = pictureTemplate.cloneNode(true);
 
       const img = pictureElement.querySelector('.picture__img');
-
-      const imageBlob = await fetch(photo.url).then((response) => response.blob());
-      img.src = URL.createObjectURL(imageBlob);
-
+      img.src = photo.url;
       img.alt = photo.description;
 
       const likes = pictureElement.querySelector('.picture__likes');
@@ -54,7 +51,7 @@ export const renderPhotos = async () => {
       pictureElement.addEventListener('click', onPictureElementClick);
 
       fragment.appendChild(pictureElement);
-    }
+    });
 
     picturesContainer.appendChild(fragment);
   } catch (error) {

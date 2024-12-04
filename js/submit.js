@@ -23,16 +23,16 @@ export const showSuccessMessage = (message) => {
     }
   }
 
-  // клик на произовльную область экрана
   function onSuccessDocumentClick(evt) {
-    if (!successElement.contains(evt.target)) {
+    const innerElement = successElement.querySelector('.success__inner');
+    if (!innerElement.contains(evt.target)) {
       removeSuccessMessage();
     }
   }
 
   successElement.querySelector('.success__button').addEventListener('click', onSuccessButtonClick);
   document.addEventListener('keydown', onSuccessDocumentKeydown);
-  document.addEventListener('click', onSuccessDocumentClick);
+  successElement.addEventListener('click', onSuccessDocumentClick);
 };
 
 export const showErrorMessage = (message) => {
@@ -59,12 +59,13 @@ export const showErrorMessage = (message) => {
   }
 
   function onErrorDocumentClick(evt) {
-    if (!errorElement.contains(evt.target)) {
+    const innerElement = errorElement.querySelector('.error__inner');
+    if (!innerElement.contains(evt.target)) {
       removeErrorMessage();
     }
   }
 
   errorElement.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
   document.addEventListener('keydown', onErrorDocumentKeydown);
-  document.addEventListener('click', onErrorDocumentClick);
+  errorElement.addEventListener('click', onErrorDocumentClick);
 };

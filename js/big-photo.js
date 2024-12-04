@@ -37,12 +37,15 @@ const renderComment = (comment) => {
 // отрисовывает комментарии внутри большого фото
 const renderComments = () => {
   socialComments.innerHTML = '';
-  // socialCommentsCount.innerHTML = '';
+  socialCommentsCount.innerHTML = '';
   commentFragment.innerHTML = '';
 
   commentsCount = (commentsCount > currentComments.length) ? currentComments.length : commentsCount;
 
-  socialCommentsCount.innerHTML = `${commentsCount} из <span class="comments-count">${currentComments.length}</span> комментариев`;
+  socialCommentsCount.innerHTML = `
+    <span class="social__comment-shown-count">${commentsCount}</span> из
+    <span class="social__comment-total-count">${currentComments.length}</span> комментариев
+    `;
 
   for (let i = 0; i < commentsCount; i++) {
     commentFragment.appendChild(renderComment(currentComments[i]));

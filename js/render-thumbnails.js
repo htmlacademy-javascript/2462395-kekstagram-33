@@ -6,7 +6,6 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 const ERROR_DATA_UPLOAD = 'Ошибка загрузки данных с сервера';
 const fragment = document.createDocumentFragment();
 
-// сообщение об ошибке
 const showError = (message) => {
   const errorTemplate = document.querySelector('#data-error').content.cloneNode(true);
   const errorElement = errorTemplate.querySelector('.data-error');
@@ -18,7 +17,7 @@ const showError = (message) => {
   }, 5000);
 };
 
-const clearPhotos = () => {
+export const clearPhotos = () => {
   const photoElements = picturesContainer.querySelectorAll('.picture');
   photoElements.forEach((element) => {
     element.remove();

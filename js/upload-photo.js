@@ -9,6 +9,7 @@ const uploadInput = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const closeOverlayButton = document.querySelector('#upload-cancel');
 const previewImage = document.querySelector('.img-upload__preview img');
+const effectPreviews = document.querySelectorAll('.effects__preview');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
@@ -17,6 +18,7 @@ const submitButton = uploadForm.querySelector('.img-upload__submit');
 const SUCCESS_SUBMIT = 'Форма успешно отправлена';
 export const ERROR_SUBMIT = 'Ошибка отправки данных';
 let pristine;
+let objectURL = '';
 
 const resetForm = () => {
   uploadInput.value = '';
@@ -36,8 +38,16 @@ const onCloseOverlay = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadInput.value = '';
-  previewImage.style = '';
-  resetForm();
+
+  if (objectURL) {
+    URL.revokeObjectURL(objectURL);
+  }
+
+  previewImage.src = '';
+  effectPreviews.forEach((effectPreview) => {
+    effectPreview.style.backgroundImage = '';
+    resetForm();
+  });
 
   document.removeEventListener('keydown', onDocumentKeydown);
   removeScaleEventListeners(scaleControlSmaller, scaleControlBigger);
@@ -70,7 +80,7 @@ const onOpenOverlay = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-const onFormSubmit = async (evt) => {
+export const onFormSubmit = async (evt) => {
   evt.preventDefault();
 
   const hashtags = hashtagInput.value;
@@ -98,6 +108,22 @@ const onFormSubmit = async (evt) => {
   }
 };
 
+const onFileChange = (evt) => {
+  const file = evt.target.files[0];
+  if (file) {
+    if (objectURL) {
+      URL.revokeObjectURL(objectURL);
+    }
+    objectURL = URL.createObjectURL(file);
+    previewImage.src = objectURL;
+    effectPreviews.forEach((effectPreview) => {
+      effectPreview.style.backgroundImage = `url(${objectURL})`;
+    });
+    onOpenOverlay();
+  }
+};
+
+uploadInput.addEventListener('change', onFileChange);
 closeOverlayButton.addEventListener('click', onCloseOverlay);
 uploadForm.addEventListener('submit', onFormSubmit);
 

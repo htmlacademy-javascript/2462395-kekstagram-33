@@ -36,9 +36,9 @@ export const showSuccessMessage = (message) => {
 };
 
 export const showErrorMessage = (message) => {
-  const errorTemplate = document.querySelector('#data-error').content.cloneNode(true);
-  const errorElement = errorTemplate.querySelector('.data-error');
-  errorElement.querySelector('.data-error__title').textContent = message;
+  const errorTemplate = document.querySelector('#error').content.cloneNode(true);
+  const errorElement = errorTemplate.querySelector('.error');
+  errorElement.querySelector('.error__title').textContent = message;
 
   document.body.appendChild(errorElement);
 
@@ -68,4 +68,15 @@ export const showErrorMessage = (message) => {
   errorElement.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
   document.addEventListener('keydown', onErrorDocumentKeydown);
   errorElement.addEventListener('click', onErrorDocumentClick);
+};
+
+export const showDataError = (message) => {
+  const errorDataTemplate = document.querySelector('#data-error').content.cloneNode(true);
+  const errorDataElement = errorDataTemplate.querySelector('.data-error');
+  errorDataElement.querySelector('.data-error__title').textContent = message;
+
+  document.body.appendChild(errorDataElement);
+  setTimeout(() => {
+    errorDataElement.remove();
+  }, 5000);
 };

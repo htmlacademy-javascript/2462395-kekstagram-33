@@ -2,7 +2,7 @@ import { renderPhotos } from './render-thumbnails.js';
 import { uploadPhoto } from './upload-photo.js';
 import { initializeFilters, DEBOUNCE_TIME, imgFilters } from './filters.js';
 import { fetchData } from './api.js';
-import { showErrorMessage } from './submit.js';
+import { showDataError } from './submit.js';
 import { debounce } from './util.js';
 
 const loadDataAndInitializeFilters = async () => {
@@ -13,7 +13,7 @@ const loadDataAndInitializeFilters = async () => {
     renderPhotos(photos);
     imgFilters.classList.remove('img-filters--inactive');
   } catch (error) {
-    showErrorMessage('Не удалось загрузить данные');
+    showDataError('Не удалось загрузить данные');
     imgFilters.classList.add('img-filters--inactive');
   }
 };

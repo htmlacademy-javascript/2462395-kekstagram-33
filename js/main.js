@@ -13,7 +13,7 @@ const loadDataAndInitializeFilters = async () => {
     renderPhotos(photos);
     imgFilters.classList.remove('img-filters--inactive');
   } catch (error) {
-    showErrorMessage(`Ошибка загрузки данных: ${error.message}`);
+    showErrorMessage('Не удалось загрузить данные');
     imgFilters.classList.add('img-filters--inactive');
   }
 };

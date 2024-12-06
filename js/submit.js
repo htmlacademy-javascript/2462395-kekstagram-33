@@ -36,9 +36,9 @@ export const showSuccessMessage = (message) => {
 };
 
 export const showErrorMessage = (message) => {
-  const errorTemplate = document.querySelector('#error').content.cloneNode(true);
-  const errorElement = errorTemplate.querySelector('.error');
-  errorElement.querySelector('.error__title').textContent = message;
+  const errorTemplate = document.querySelector('#data-error').content.cloneNode(true);
+  const errorElement = errorTemplate.querySelector('.data-error');
+  errorElement.querySelector('.data-error__title').textContent = message;
 
   document.body.appendChild(errorElement);
 

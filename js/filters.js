@@ -1,7 +1,7 @@
 import { debounce } from './util.js';
 import { renderPhotos, clearPhotos } from './render-thumbnails.js';
 
-const DEBOUNCE_TIME = 500;
+export const DEBOUNCE_TIME = 500;
 const RANDOM_SORT_VALUE = 0.5;
 const PHOTOS_LIMIT = 10;
 

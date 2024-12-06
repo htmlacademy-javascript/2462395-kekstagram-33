@@ -1,5 +1,4 @@
 import { showBigPhoto } from './big-photo.js';
-import { fetchData } from './api.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -24,9 +23,8 @@ export const clearPhotos = () => {
   });
 };
 
-export const renderPhotos = async () => {
+export const renderPhotos = (photos) => {
   try {
-    const photos = await fetchData();
     clearPhotos();
 
     photos.forEach((photo) => {

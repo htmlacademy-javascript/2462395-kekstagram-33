@@ -34,4 +34,5 @@ const createPhoto = () => ({
   comments: createCommentArray(),
 });
 
-export const createPhotoArray = () => Array.from({ length: MAX_PHOTO_NUMBER }, createPhoto);
+const createPhotoArray = () => Array.from({ length: MAX_PHOTO_NUMBER }, createPhoto);
+createPhotoArray();

@@ -11,9 +11,7 @@ const socialComments = bigPhoto.querySelector('.social__comments');
 const socialComment = bigPhoto.querySelector('.social__comment');
 const socialCommentsCount = bigPhoto.querySelector('.social__comment-count');
 const loadButton = bigPhoto.querySelector('.comments-loader');
-
 const commentFragment = document.createDocumentFragment();
-
 let commentsCount = COMMENTS_STEP;
 let currentComments = [];
 
@@ -22,7 +20,6 @@ const toggleModal = () => {
   document.body.classList.toggle('modal-open');
 };
 
-// создает один комментарий
 const renderComment = (comment) => {
   const newComment = socialComment.cloneNode(true);
 
@@ -34,7 +31,6 @@ const renderComment = (comment) => {
   return newComment;
 };
 
-// отрисовывает комментарии внутри большого фото
 const renderComments = () => {
   socialComments.innerHTML = '';
   socialCommentsCount.innerHTML = '';
@@ -60,7 +56,6 @@ const renderComments = () => {
   socialComments.appendChild(commentFragment);
 };
 
-// меняет данные большого фото
 const show = (photo) => {
   const {url, likes, description} = photo;
 
@@ -80,7 +75,6 @@ function onEscKeyDown(evt) {
   }
 }
 
-// закрывает окно
 function closeBigPhoto() {
   commentsCount = COMMENTS_STEP;
 
@@ -96,7 +90,6 @@ const onCloseClick = () => {
   closeBigPhoto();
 };
 
-// открывает большое фото
 export const showBigPhoto = (photo) => {
 
   currentComments = photo.comments.slice();

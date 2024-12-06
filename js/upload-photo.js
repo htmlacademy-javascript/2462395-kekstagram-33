@@ -1,4 +1,4 @@
-import { validateHashtags, validateComments, hashtagInput, commentInput, initializeValidation } from './validation.js';
+import { validateHashtags, validateComments, hashtagInput, commentInput, initializeValidation, uploadForm } from './validation.js';
 import { isEscapeKey } from './util.js';
 import { initiateScale, removeScaleEventListeners } from './scale.js';
 import { addEffectListeners, removeEffectListeners } from './slider.js';
@@ -13,10 +13,9 @@ const effectPreviews = document.querySelectorAll('.effects__preview');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
-const uploadForm = document.querySelector('.img-upload__form');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
 const SUCCESS_SUBMIT = 'Форма успешно отправлена';
-export const ERROR_SUBMIT = 'Ошибка отправки данных';
+const ERROR_SUBMIT = 'Ошибка отправки данных';
 let pristine;
 let objectURL = '';
 
@@ -80,7 +79,7 @@ const onOpenOverlay = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-export const onFormSubmit = async (evt) => {
+const onFormSubmit = async (evt) => {
   evt.preventDefault();
 
   const hashtags = hashtagInput.value;

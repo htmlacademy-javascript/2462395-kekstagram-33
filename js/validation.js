@@ -1,7 +1,6 @@
 const MAX_HASHTAG_NUMBER = 5;
 const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
-
 export const uploadForm = document.querySelector('.img-upload__form');
 export const hashtagInput = uploadForm.querySelector('.text__hashtags');
 export const commentInput = uploadForm.querySelector('.text__description');

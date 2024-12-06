@@ -16,11 +16,11 @@ const setActiveFilterButton = (activeButton) => {
   activeButton.classList.add('img-filters__button--active');
 };
 
-const filterDefault = (event) => {
+const filterDefault = debounce((event) => {
   clearPhotos();
   renderPhotos(photos);
   setActiveFilterButton(event.target);
-};
+}, DEBOUNCE_TIME);
 
 const filterRandom = debounce((event) => {
   clearPhotos();
@@ -49,6 +49,9 @@ addFilterEventListener(document.querySelector('#filter-random'), filterRandom);
 addFilterEventListener(document.querySelector('#filter-discussed'), filterDiscussed);
 
 export const initializeFilters = (loadedPhotos) => {
+  if (!loadedPhotos || loadedPhotos.length === 0) {
+    return;
+  }
   photos = loadedPhotos;
   renderPhotos(photos);
   imgFilters.classList.remove('img-filters--inactive');

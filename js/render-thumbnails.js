@@ -1,11 +1,10 @@
 import { showBigPhoto } from './big-photo.js';
-import { fetchData } from './api.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const ERROR_DATA_UPLOAD = 'Ошибка загрузки данных с сервера';
 const fragment = document.createDocumentFragment();
 
-// сообщение об ошибке
 const showError = (message) => {
   const errorTemplate = document.querySelector('#data-error').content.cloneNode(true);
   const errorElement = errorTemplate.querySelector('.data-error');
@@ -17,16 +16,15 @@ const showError = (message) => {
   }, 5000);
 };
 
-const clearPhotos = () => {
+export const clearPhotos = () => {
   const photoElements = picturesContainer.querySelectorAll('.picture');
   photoElements.forEach((element) => {
     element.remove();
   });
 };
 
-export const renderPhotos = async () => {
+export const renderPhotos = (photos) => {
   try {
-    const photos = await fetchData();
     clearPhotos();
 
     photos.forEach((photo) => {
@@ -54,6 +52,6 @@ export const renderPhotos = async () => {
 
     picturesContainer.appendChild(fragment);
   } catch (error) {
-    showError('Ошибка загрузки данных с сервера');
+    showError(ERROR_DATA_UPLOAD);
   }
 };

@@ -1,9 +1,8 @@
-const BASE_URL = 'https://32.javascript.htmlacademy.pro/kekstagram';
+const BASE_URL = 'https://32.javascript.htmlacademy.pro/kekstagram/';
 
-// загрузка данных
 export const fetchData = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/data`);
+    const response = await fetch(`${BASE_URL}data`);
     if (!response.ok) {
       throw new Error(`Ошибка загрузки данных: ${response.statusText}`);
     }
@@ -13,7 +12,6 @@ export const fetchData = async () => {
   }
 };
 
-// отправка данных
 export const sendData = async (formData) => {
   try {
     const response = await fetch(BASE_URL, {
@@ -28,4 +26,3 @@ export const sendData = async (formData) => {
     throw new Error(`Ошибка отправки данных: ${error.message}`);
   }
 };
-

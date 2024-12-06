@@ -1,4 +1,4 @@
-import { validateHashtags, validateComments, hashtagInput, commentInput, pristine } from './validation.js';
+import { validateHashtags, validateComments, hashtagInput, commentInput, initializeValidation, uploadForm } from './validation.js';
 import { isEscapeKey } from './util.js';
 import { initiateScale, removeScaleEventListeners } from './scale.js';
 import { addEffectListeners, removeEffectListeners } from './slider.js';
@@ -9,13 +9,15 @@ const uploadInput = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const closeOverlayButton = document.querySelector('#upload-cancel');
 const previewImage = document.querySelector('.img-upload__preview img');
+const effectPreviews = document.querySelectorAll('.effects__preview');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
-const uploadForm = document.querySelector('.img-upload__form');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
-const SUCCESS_MESSAGE = 'Форма успешно отправлена';
-const ERROR_MESSAGE = 'Ошибка отправки данных';
+const SUCCESS_SUBMIT = 'Форма успешно отправлена';
+const ERROR_SUBMIT = 'Ошибка отправки данных';
+let pristine;
+let objectURL = '';
 
 const resetForm = () => {
   uploadInput.value = '';
@@ -26,13 +28,25 @@ const resetForm = () => {
   commentInput.value = '';
   document.querySelector('#effect-none').checked = true;
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
+  if (pristine) {
+    pristine.reset();
+  }
 };
 
-export const onCloseOverlay = () => {
+const onCloseOverlay = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadInput.value = '';
-  previewImage.style = '';
+
+  if (objectURL) {
+    URL.revokeObjectURL(objectURL);
+  }
+
+  previewImage.src = '';
+  effectPreviews.forEach((effectPreview) => {
+    effectPreview.style.backgroundImage = '';
+    resetForm();
+  });
 
   document.removeEventListener('keydown', onDocumentKeydown);
   removeScaleEventListeners(scaleControlSmaller, scaleControlBigger);
@@ -42,6 +56,13 @@ export const onCloseOverlay = () => {
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt) && !uploadOverlay.classList.contains('hidden')) {
     const activeElement = document.activeElement;
+    const errorMessage = document.querySelector('.error');
+
+    if (errorMessage) {
+      errorMessage.remove();
+      return;
+    }
+
     if (activeElement.classList.contains('text__hashtags') || activeElement.classList.contains('text__description')) {
       return;
     }
@@ -52,7 +73,7 @@ function onDocumentKeydown(evt) {
 const onOpenOverlay = () => {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  pristine.validate();
+  pristine = initializeValidation();
   initiateScale(previewImage, scaleControlSmaller, scaleControlBigger, scaleControlValue);
   addEffectListeners();
   document.addEventListener('keydown', onDocumentKeydown);
@@ -75,17 +96,33 @@ const onFormSubmit = async (evt) => {
     try {
       const formData = new FormData(uploadForm);
       await sendData(formData);
-      showSuccessMessage(SUCCESS_MESSAGE);
+      showSuccessMessage(SUCCESS_SUBMIT);
       onCloseOverlay();
       resetForm();
     } catch (error) {
-      showErrorMessage(ERROR_MESSAGE);
+      showErrorMessage(ERROR_SUBMIT);
     } finally {
       submitButton.disabled = false;
     }
   }
 };
 
+const onFileChange = (evt) => {
+  const file = evt.target.files[0];
+  if (file) {
+    if (objectURL) {
+      URL.revokeObjectURL(objectURL);
+    }
+    objectURL = URL.createObjectURL(file);
+    previewImage.src = objectURL;
+    effectPreviews.forEach((effectPreview) => {
+      effectPreview.style.backgroundImage = `url(${objectURL})`;
+    });
+    onOpenOverlay();
+  }
+};
+
+uploadInput.addEventListener('change', onFileChange);
 closeOverlayButton.addEventListener('click', onCloseOverlay);
 uploadForm.addEventListener('submit', onFormSubmit);
 

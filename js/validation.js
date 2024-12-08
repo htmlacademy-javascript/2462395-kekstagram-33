@@ -1,9 +1,23 @@
 const MAX_HASHTAG_NUMBER = 5;
 const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
+
+const ValidationErrors = {
+  HASHTAGS: {
+    FORMAT: 'Хэштег должен начинаться с #, может содержать только буквы и цифры.',
+    ONLY_HASH: 'Хэштег не может состоять из одной #.',
+    MAX_COUNT: 'Хэштегов должно быть не больше пяти.',
+    NO_REPEAT: 'Хэштеги не должны повторяться.',
+  },
+  COMMENT: {
+    TOO_LONG: 'Комментарий не может быть длиннее 140 символов.',
+  },
+};
+
 export const uploadForm = document.querySelector('.img-upload__form');
 export const hashtagInput = uploadForm.querySelector('.text__hashtags');
 export const commentInput = uploadForm.querySelector('.text__description');
+
 
 const splitHashtags = (input) => {
   if (!input.trim()) {
@@ -33,18 +47,6 @@ export const validateHashtags = (input) => {
 export function validateComments(value) {
   return value.length <= MAX_COMMENT_LENGTH;
 }
-
-const ValidationErrors = {
-  HASHTAGS: {
-    FORMAT: 'Хэштег должен начинаться с #, может содержать только буквы и цифры.',
-    ONLY_HASH: 'Хэштег не может состоять из одной #.',
-    MAX_COUNT: 'Хэштегов должно быть не больше пяти.',
-    NO_REPEAT: 'Хэштеги не должны повторяться.',
-  },
-  COMMENT: {
-    TOO_LONG: 'Комментарий не может быть длиннее 140 символов.',
-  },
-};
 
 export const initializeValidation = () => {
   const pristine = new Pristine(uploadForm, {

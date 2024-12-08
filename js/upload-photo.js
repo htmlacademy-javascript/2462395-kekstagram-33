@@ -5,6 +5,9 @@ import { addEffectListeners, removeEffectListeners } from './slider.js';
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './submit.js';
 
+const SUCCESS_SUBMIT = 'Форма успешно отправлена';
+const ERROR_SUBMIT = 'Ошибка отправки данных';
+
 const uploadInput = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const closeOverlayButton = document.querySelector('#upload-cancel');
@@ -14,8 +17,6 @@ const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
-const SUCCESS_SUBMIT = 'Форма успешно отправлена';
-const ERROR_SUBMIT = 'Ошибка отправки данных';
 let pristine;
 let objectURL = '';
 

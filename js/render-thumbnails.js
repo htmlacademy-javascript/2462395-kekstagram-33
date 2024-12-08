@@ -1,8 +1,9 @@
 import { showBigPhoto } from './big-photo.js';
 
+const ERROR_DATA_UPLOAD = 'Ошибка загрузки данных с сервера';
+
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const ERROR_DATA_UPLOAD = 'Ошибка загрузки данных с сервера';
 const fragment = document.createDocumentFragment();
 
 const showError = (message) => {
